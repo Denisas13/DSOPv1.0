@@ -5,22 +5,30 @@ using namespace std;
 
 struct student{
 string v, p;
-double ND[50], egz, NDv, galutinis;
+double ND[50], egz, NDv, galutinis, mediana;
 };
 
 void Ivestis(int i, int n, student A[]);
 void Isvestis(student A[], int n, int kiek);
 double NDvidurkis(double A[], int n);
 double Galutinis(double egz, double nd);
+double NDmediana(double A[], int n);
+void SortArray(double A[], int n);
 
 int main(){
 
 student A[50];
-char yn;
+char yn, vidmed;
 int n, kiek=0;
 
 cout << "Kiek buvo namu darbu? ";
 cin >> n;
+
+do{
+cout << "Galutini ivertinima isvesti kaip vidurki, ar kaip mediana? (v/m): ";
+cin >> vidmed;
+if(vidmed=='v' || vidmed=='m')break;
+}while(true);
 
 for(int i=0; i<50;i++){
     cout << "Ar norite prideti studenta? (y/n): ";
@@ -28,8 +36,11 @@ for(int i=0; i<50;i++){
     if(yn=='y'){
         Ivestis(i,n,A);
         kiek++;
+        SortArray(A[i].ND,n);
         A[i].NDv=NDvidurkis(A[i].ND,n);
-        A[i].galutinis=Galutinis(A[i].egz,A[i].NDv);
+        A[i].mediana=NDmediana(A[i].ND,n);
+        if(vidmed=='v') A[i].galutinis=Galutinis(A[i].egz,A[i].NDv);
+        else if(vidmed=='m') A[i].galutinis=Galutinis(A[i].egz,A[i].mediana);
     }
     else if(yn=='n'){
         break;
@@ -59,10 +70,10 @@ cin >> A[i].egz;
 }
 
 void Isvestis(student A[], int n, int kiek){
-cout << setw(20) << "Vardas" << setw(20) << "Pavarde" << setw(15) << "Galutinis ivertinimas" << endl;
-cout << "----------------------------------------------" << endl;
+cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(21)  << std::right << "Galutinis ivertinimas" << endl;
+cout << "-------------------------------------------------------------" << endl;
 for(int i=0; i<kiek; i++){
-    cout << setw(20) << A[i].v << setw(20) << A[i].p << setw(15) << A[i].galutinis << endl;
+    cout << setw(20) << std::left << A[i].v << std::left << setw(20) << A[i].p << setw(21) << std::right << A[i].galutinis << endl;
 }
 }
 
@@ -76,4 +87,24 @@ return sum/n;
 
 double Galutinis(double egz, double nd){
 return egz*0.6+nd*0.4;
+}
+
+double NDmediana(double A[], int n){
+    double med;
+if(n%2==0)med=(A[n/2]+A[n/2+1])/2;
+else if(n%2==1)med=A[n/2];
+return med;
+}
+
+void SortArray(double A[], int n){
+    double t;
+for(int i=0; i<n; i++){
+    for(int j=i+1; j<n; j++){
+        if(A[i]>A[j]){
+            t=A[j];
+            A[j]=A[i];
+            A[i]=t;
+        }
+    }
+}
 }
