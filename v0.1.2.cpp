@@ -98,7 +98,7 @@ if(vidmed=='v')cout << setw(20) << std::left << "Vardas" << std::left << setw(20
 if(vidmed=='m')cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(28)  << std::right << "Galutinis ivertinimas (med.)" << endl;
 cout << "--------------------------------------------------------------------" << endl;
 for(int i=0; i<kiek; i++){
-    cout << setw(20) << std::left << A[i].v << std::left << setw(20) << A[i].p << setw(28) << std::right << A[i].galutinis << endl;
+    cout << setw(20) << std::left << A[i].v << std::left << setw(20) << A[i].p << setw(28) << std::right << fixed << setprecision(2) << A[i].galutinis << endl;
 }
 }
 
