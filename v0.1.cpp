@@ -5,12 +5,13 @@ using namespace std;
 
 struct student{
 string v, p;
-double ND[50], egz, NDv;
+double ND[50], egz, NDv, galutinis;
 };
 
 void Ivestis(int i, int n, student A[]);
 void Isvestis(student A[], int n, int kiek);
 double NDvidurkis(double A[], int n);
+double Galutinis(double egz, double nd);
 
 int main(){
 
@@ -22,12 +23,13 @@ cout << "Kiek buvo namu darbu? ";
 cin >> n;
 
 for(int i=0; i<50;i++){
-    cout << "Ar norite prideti studenta? y/n";
+    cout << "Ar norite prideti studenta? (y/n): ";
     cin >> yn;
     if(yn=='y'){
         Ivestis(i,n,A);
         kiek++;
         A[i].NDv=NDvidurkis(A[i].ND,n);
+        A[i].galutinis=Galutinis(A[i].egz,A[i].NDv);
     }
     else if(yn=='n'){
         break;
@@ -42,6 +44,7 @@ Isvestis(A,n,kiek);
 system("pause");
 return 0;
 }
+
 void Ivestis(int i, int n, student A[]){
 cout << "Iveskite studento varda: ";
 cin >> A[i].v;
@@ -54,18 +57,23 @@ for(int j=0; j<n; j++){
 cout << "Iveskite egzamino ivertinima: ";
 cin >> A[i].egz;
 }
+
 void Isvestis(student A[], int n, int kiek){
 cout << setw(20) << "Vardas" << setw(20) << "Pavarde" << setw(15) << "Galutinis ivertinimas" << endl;
 cout << "----------------------------------------------" << endl;
 for(int i=0; i<kiek; i++){
-    cout << setw(20) << A[i].v << setw(20) << A[i].p << setw(15) << A[i].NDv << endl;
+    cout << setw(20) << A[i].v << setw(20) << A[i].p << setw(15) << A[i].galutinis << endl;
 }
 }
+
 double NDvidurkis(double A[], int n){
-    double sum=0, vid;
+    double sum=0;
 for(int i=0; i<n; i++){
 sum=sum+A[i];
 }
-vid=sum/n;
-return vid;
+return sum/n;
+}
+
+double Galutinis(double egz, double nd){
+return egz*0.6+nd*0.4;
 }
