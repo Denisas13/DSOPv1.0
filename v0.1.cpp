@@ -5,11 +5,12 @@ using namespace std;
 
 struct student{
 string v, p;
-double ND[50], egz;
+double ND[50], egz, NDv;
 };
 
 void Ivestis(int i, int n, student A[]);
 void Isvestis(student A[], int n, int kiek);
+double NDvidurkis(double A[], int n);
 
 int main(){
 
@@ -26,6 +27,7 @@ for(int i=0; i<50;i++){
     if(yn=='y'){
         Ivestis(i,n,A);
         kiek++;
+        A[i].NDv=NDvidurkis(A[i].ND,n);
     }
     else if(yn=='n'){
         break;
@@ -34,6 +36,7 @@ for(int i=0; i<50;i++){
         i--;
     }
 }
+
 Isvestis(A,n,kiek);
 
 system("pause");
@@ -55,6 +58,14 @@ void Isvestis(student A[], int n, int kiek){
 cout << setw(20) << "Vardas" << setw(20) << "Pavarde" << setw(15) << "Galutinis ivertinimas" << endl;
 cout << "----------------------------------------------" << endl;
 for(int i=0; i<kiek; i++){
-    cout << setw(20) << A[i].v << setw(20) << A[i].p << setw(15) << A[i].egz << endl;
+    cout << setw(20) << A[i].v << setw(20) << A[i].p << setw(15) << A[i].NDv << endl;
 }
+}
+double NDvidurkis(double A[], int n){
+    double sum=0, vid;
+for(int i=0; i<n; i++){
+sum=sum+A[i];
+}
+vid=sum/n;
+return vid;
 }
