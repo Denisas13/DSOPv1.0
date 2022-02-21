@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <random>
 
 using namespace std;
 
@@ -15,6 +16,10 @@ double NDvidurkis(double A[], int n);
 double Galutinis(double egz, double nd);
 double NDmediana(double A[], int n);
 void SortArray(double A[], int n);
+
+std::random_device rd;
+std::mt19937 mt(rd());
+std::uniform_int_distribution<int> dist(1,10);
 
 int main(){
 
@@ -55,19 +60,35 @@ return 0;
 }
 
 void Ivestis(int i, student A[]){
+    int input, input2, rand;
 cout << "Iveskite studento varda: ";
 cin >> A[i].v;
 cout << "Iveskite studento pavarde: ";
 cin >> A[i].p;
 A[i].n=0;
 for(int j=0; j<50; j++){
-    cout << "Iveskite " << j+1 << "-ojo namu darbo ivertinima (arba 0, jeigu jau ivesti visi ivertinimai): ";
-    cin >> A[i].ND[j];
-    if(A[i].ND[j]==0)break;
+    cout << "Iveskite " << j+1 << "-ojo namu darbo ivertinima (iveskite -1, jeigu norite sugeneruoti atsitiktini ivertinima, arba 0, jeigu jau ivesti visi ivertinimai): ";
+    cin >> input;
+    if(input==-1){
+        rand=dist(mt);
+        A[i].ND[j]=rand;
+        A[i].n++;
+        cout << rand << endl;
+    }
+    else{
+    if(input==0)break;
+    A[i].ND[j]=input;
     A[i].n++;
+    }
 }
-cout << "Iveskite egzamino ivertinima: ";
-cin >> A[i].egz;
+cout << "Iveskite egzamino ivertinima (arba 0, jeigu norite sugeneruoti atsitiktini ivertinima): ";
+cin >> input2;
+if(input2==0){
+    rand=dist(mt);
+    A[i].egz=rand;
+    cout << rand << endl;
+}
+else A[i].egz=input2;
 }
 
 void Isvestis(student A[],int kiek, char vidmed){
