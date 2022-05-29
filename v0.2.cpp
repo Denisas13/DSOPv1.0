@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <iomanip>
 #include <vector>
 #include <random>
@@ -14,8 +15,8 @@ double egz, NDv, galutinis, mediana;
 std::vector<double> ND;
 };
 
-void Ivestis(int i, student A[]);
-void Isvestis(student A[], int kiek, char vidmed);
+void Ivestis(int i, std::vector<student> A);
+void Isvestis(std::vector<student> A, int kiek, char vidmed);
 double NDvidurkis(std::vector<double>& A, int n);
 double Galutinis(double egz, double nd);
 double NDmediana(std::vector<double>& A, int n);
@@ -26,7 +27,7 @@ std::uniform_int_distribution<int> dist(1,10);
 
 int main(){
 
-student* A = new student[50];
+std::vector<student> A;
 char yn, vidmed, input;
 int kiek=0;
 string txt;
@@ -70,14 +71,26 @@ Isvestis(A,kiek,vidmed);
 else
 {
     ifstream in ("kursiokai.txt");
-    in.ignore(1000, '\n');
+
+    string str;
+    getline(in, str); 
+    istringstream ss(str);
+
+    int k=-3;
+    string temp;
+    while(!ss.eof())
+    {
+        ss >> temp;
+        k++;
+    }
+cout << k;
 }
 
 system("pause");
 return 0;
 }
 
-void Ivestis(int i, student A[]){
+void Ivestis(int i, std::vector<student> A){
     int input, input2, rand;
 cout << "Iveskite studento varda: ";
 cin >> A[i].v;
@@ -109,7 +122,7 @@ if(input2==0){
 else A[i].egz=input2;
 }
 
-void Isvestis(student A[],int kiek, char vidmed){
+void Isvestis(std::vector<student> A,int kiek, char vidmed){
 if(vidmed=='v')cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(28)  << std::right << "Galutinis ivertinimas (vid.)" << endl;
 if(vidmed=='m')cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(28)  << std::right << "Galutinis ivertinimas (med.)" << endl;
 cout << "--------------------------------------------------------------------" << endl;
