@@ -26,9 +26,18 @@ std::uniform_int_distribution<int> dist(1,10);
 int main(){
 
 student* A = new student[50];
-char yn, vidmed;
+char yn, vidmed, input;
 int kiek=0;
+string txt;
 
+do{
+cout << "Duomenis nuskaityti is failo 'kursiokai.txt', ar ivesti dabar? (f/d): ";
+cin >> input;
+if(input=='f' || input=='d')break;
+}while(true);
+
+if(input=='d')
+{
 do{
 cout << "Galutini ivertinima isvesti kaip vidurki, ar kaip mediana? (v/m): ";
 cin >> vidmed;
@@ -56,6 +65,9 @@ for(int i=0; i<50;i++){
 }
 
 Isvestis(A,kiek,vidmed);
+}
+else
+{}
 
 system("pause");
 return 0;
