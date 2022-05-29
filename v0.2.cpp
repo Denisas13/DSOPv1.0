@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <vector>
 #include <random>
+#include <algorithm>
 
 using namespace std;
 
@@ -17,7 +18,6 @@ void Isvestis(student A[], int kiek, char vidmed);
 double NDvidurkis(std::vector<double>& A, int n);
 double Galutinis(double egz, double nd);
 double NDmediana(std::vector<double>& A, int n);
-void SortArray(std::vector<double>& A, int n);
 
 std::random_device rd;
 std::mt19937 mt(rd());
@@ -25,7 +25,7 @@ std::uniform_int_distribution<int> dist(1,10);
 
 int main(){
 
-student A[50];
+student* A = new student[50];
 char yn, vidmed;
 int kiek=0;
 
@@ -41,7 +41,7 @@ for(int i=0; i<50;i++){
     if(yn=='y'){
         Ivestis(i,A);
         kiek++;
-        SortArray(A[i].ND,A[i].n);
+        sort(A[i].ND.begin(), A[i].ND.end());
         A[i].NDv=NDvidurkis(A[i].ND,A[i].n);
         A[i].mediana=NDmediana(A[i].ND,A[i].n);
         if(vidmed=='v') A[i].galutinis=Galutinis(A[i].egz,A[i].NDv);
@@ -119,17 +119,4 @@ double NDmediana(std::vector<double>& A, int n){
 if(n%2==0)med=(A[n/2]+A[n/2+1])/2;
 else if(n%2==1)med=A[n/2];
 return med;
-}
-
-void SortArray(std::vector<double>& A, int n){
-    double t;
-for(int i=0; i<n; i++){
-    for(int j=i+1; j<n; j++){
-        if(A[i]>A[j]){
-            t=A[j];
-            A[j]=A[i];
-            A[i]=t;
-        }
-    }
-}
 }
