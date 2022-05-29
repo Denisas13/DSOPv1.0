@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 #include <vector>
 #include <random>
@@ -67,7 +68,10 @@ for(int i=0; i<50;i++){
 Isvestis(A,kiek,vidmed);
 }
 else
-{}
+{
+    ifstream in ("kursiokai.txt");
+    in.ignore(1000, '\n');
+}
 
 system("pause");
 return 0;
