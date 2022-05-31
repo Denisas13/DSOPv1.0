@@ -11,15 +11,18 @@ using namespace std;
 struct student{
 int n;
 string v, p;
-double egz, NDv, galutinis, mediana;
+double egz, NDv, galutinis, mediana, galmed;
 std::vector<double> ND;
 };
 
-void Ivestis(int i, std::vector<student> A);
-void Isvestis(std::vector<student> A, int kiek, char vidmed);
+void IvestisFailu(student A[], int&ndk, int&stud);
+void Ivestis(int i, student A[]);
+void IsvestisBendrai(student A[],int stud);
+void Isvestis(student A[], int kiek, char vidmed);
 double NDvidurkis(std::vector<double>& A, int n);
 double Galutinis(double egz, double nd);
 double NDmediana(std::vector<double>& A, int n);
+void sortByName(student A[], int stud,int ndk);
 
 std::random_device rd;
 std::mt19937 mt(rd());
@@ -27,9 +30,9 @@ std::uniform_int_distribution<int> dist(1,10);
 
 int main(){
 
-std::vector<student> A;
+student A[50];
 char yn, vidmed, input;
-int kiek=0;
+int kiek=0, k=-3;
 string txt;
 
 do{
@@ -70,27 +73,54 @@ Isvestis(A,kiek,vidmed);
 }
 else
 {
-    ifstream in ("kursiokai.txt");
+    int ndk=-3, stud=0;
+    IvestisFailu(A,ndk,stud);
 
-    string str;
-    getline(in, str); 
-    istringstream ss(str);
-
-    int k=-3;
-    string temp;
-    while(!ss.eof())
-    {
-        ss >> temp;
-        k++;
+    for(int i=0; i<stud; i++){
+        sort(A[i].ND.begin(), A[i].ND.end());
+        A[i].NDv=NDvidurkis(A[i].ND,ndk);
+        A[i].mediana=NDmediana(A[i].ND,ndk);
+        A[i].galutinis=Galutinis(A[i].egz,A[i].NDv);
+        A[i].galmed=Galutinis(A[i].egz,A[i].mediana);
     }
-cout << k;
+IsvestisBendrai(A,stud);
 }
 
 system("pause");
 return 0;
 }
+void IvestisFailu(student A[], int&ndk, int&stud){
 
-void Ivestis(int i, std::vector<student> A){
+    ifstream in ("kursiokai.txt");
+
+    int nd;
+
+    string str;
+    getline(in, str);
+    istringstream ss(str);
+
+    string temp;
+    while(!ss.eof())
+    {
+        ss >> temp;
+        ndk++;
+    }
+
+    int j=0;
+    string t;
+    while(!in.eof()){
+    in >> A[j].v >> A[j].p;
+    for(int i=0; i<ndk; i++) {
+        in >> nd;
+        A[j].ND.push_back(nd);
+    }
+    in >> A[j].egz;
+    j++;
+    stud=j;
+    }
+}
+
+void Ivestis(int i, student A[]){
     int input, input2, rand;
 cout << "Iveskite studento varda: ";
 cin >> A[i].v;
@@ -122,7 +152,15 @@ if(input2==0){
 else A[i].egz=input2;
 }
 
-void Isvestis(std::vector<student> A,int kiek, char vidmed){
+void IsvestisBendrai(student A[],int stud){
+cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(8)  << std::right << "med." << setw(8) << std::right << "vid." << endl;
+cout << "--------------------------------------------------------------------" << endl;
+for(int i=0; i<stud; i++){
+    cout << setw(20) << std::left << A[i].v << std::left << setw(20) << A[i].p << setw(8) << std::right << fixed << setprecision(2) << A[i].galmed << setw(8) << std::right << fixed << setprecision(2) << A[i].galutinis << endl;
+}
+}
+
+void Isvestis(student A[],int kiek, char vidmed){
 if(vidmed=='v')cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(28)  << std::right << "Galutinis ivertinimas (vid.)" << endl;
 if(vidmed=='m')cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(28)  << std::right << "Galutinis ivertinimas (med.)" << endl;
 cout << "--------------------------------------------------------------------" << endl;
@@ -148,4 +186,8 @@ double NDmediana(std::vector<double>& A, int n){
 if(n%2==0)med=(A[n/2]+A[n/2+1])/2;
 else if(n%2==1)med=A[n/2];
 return med;
+}
+
+void sortByName(student A[], int stud,int ndk){
+
 }
