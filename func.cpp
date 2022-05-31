@@ -88,7 +88,15 @@ for(int i=0; i<kiek; i++){
 }
 
 double NDvidurkis(std::vector<double>& A, int n){
-    double sum=0;
+try{
+    if(n==0){
+        throw 0;
+    }
+    }catch(int ex){
+        cout << "Negalima apskaiciuoti vidurkio, kai nera ne vieno pazymio" << endl;
+    }
+
+double sum=0;
 for(int i=0; i<n; i++){
 sum=sum+A[i];
 }
