@@ -90,7 +90,7 @@ return 0;
 }
 void IvestisFailu(std::vector<student>& A, int&ndk, int&stud){
 
-    ifstream in ("studentai10000.txt");
+    ifstream in ("kursiokai.txt");
 
     student b;
     int nd;
