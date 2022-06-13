@@ -4,7 +4,7 @@ using namespace std;
 
 int main(){
 
-student A[50];
+std::vector<student> A;
 char yn, vidmed, input;
 int kiek=0, k=-3;
 string txt;
