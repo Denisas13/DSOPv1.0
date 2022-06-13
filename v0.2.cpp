@@ -15,14 +15,13 @@ double egz, NDv, galutinis, mediana, galmed;
 std::vector<double> ND;
 };
 
-void IvestisFailu(student A[], int&ndk, int&stud);
-void Ivestis(int i, student A[]);
-void IsvestisBendrai(student A[],int stud);
-void Isvestis(student A[], int kiek, char vidmed);
+void IvestisFailu(std::vector<student>& A, int&ndk, int&stud);
+void Ivestis(int i, std::vector<student>& A);
+void IsvestisBendrai(std::vector<student>& A,int stud);
+void Isvestis(std::vector<student>& A, int kiek, char vidmed);
 double NDvidurkis(std::vector<double>& A, int n);
 double Galutinis(double egz, double nd);
 double NDmediana(std::vector<double>& A, int n);
-void sortByName(student A[], int stud,int ndk);
 
 std::random_device rd;
 std::mt19937 mt(rd());
@@ -30,7 +29,7 @@ std::uniform_int_distribution<int> dist(1,10);
 
 int main(){
 
-student A[50];
+std::vector<student> A;
 char yn, vidmed, input;
 int kiek=0, k=-3;
 string txt;
@@ -89,10 +88,11 @@ IsvestisBendrai(A,stud);
 system("pause");
 return 0;
 }
-void IvestisFailu(student A[], int&ndk, int&stud){
+void IvestisFailu(std::vector<student>& A, int&ndk, int&stud){
 
-    ifstream in ("kursiokai.txt");
+    ifstream in ("studentai10000.txt");
 
+    student b;
     int nd;
 
     string str;
@@ -106,53 +106,56 @@ void IvestisFailu(student A[], int&ndk, int&stud){
         ndk++;
     }
 
-    int j=0;
     string t;
     while(!in.eof()){
-    in >> A[j].v >> A[j].p;
+    in >> b.v >> b.p;
     for(int i=0; i<ndk; i++) {
         in >> nd;
-        A[j].ND.push_back(nd);
+        b.ND.push_back(nd);
     }
-    in >> A[j].egz;
-    j++;
-    stud=j;
+    in >> b.egz;
+    A.push_back(b);
+    stud++;
     }
 }
 
-void Ivestis(int i, student A[]){
-    int input, input2, rand;
+void Ivestis(int i, std::vector<student>& A){
+int input, input2, rand;
+student b;
+
 cout << "Iveskite studento varda: ";
-cin >> A[i].v;
+cin >> b.v;
 cout << "Iveskite studento pavarde: ";
-cin >> A[i].p;
-A[i].n=0;
-for(int j=0; j<50; j++){
-    cout << "Iveskite " << j+1 << "-ojo namu darbo ivertinima (iveskite -1, jeigu norite sugeneruoti atsitiktini ivertinima, arba 0, jeigu jau ivesti visi ivertinimai): ";
+cin >> b.p;
+b.n=0;
+while(input!=0){
+    cout << "Iveskite " << b.n+1 << "-ojo namu darbo ivertinima (iveskite -1, jeigu norite sugeneruoti atsitiktini ivertinima, arba 0, jeigu jau ivesti visi ivertinimai): ";
     cin >> input;
     if(input==-1){
         rand=dist(mt);
-        A[i].ND.push_back(rand);
-        A[i].n++;
+        b.ND.push_back(rand);
+        b.n++;
         cout << rand << endl;
     }
     else{
     if(input==0)break;
-    A[i].ND.push_back(input);
-    A[i].n++;
+    b.ND.push_back(input);
+    b.n++;
     }
 }
 cout << "Iveskite egzamino ivertinima (arba 0, jeigu norite sugeneruoti atsitiktini ivertinima): ";
 cin >> input2;
 if(input2==0){
     rand=dist(mt);
-    A[i].egz=rand;
+    b.egz=rand;
     cout << rand << endl;
 }
-else A[i].egz=input2;
+else b.egz=input2;
+
+A.push_back(b);
 }
 
-void IsvestisBendrai(student A[],int stud){
+void IsvestisBendrai(std::vector<student>& A,int stud){
 cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(8)  << std::right << "med." << setw(8) << std::right << "vid." << endl;
 cout << "--------------------------------------------------------------------" << endl;
 for(int i=0; i<stud; i++){
@@ -160,7 +163,7 @@ for(int i=0; i<stud; i++){
 }
 }
 
-void Isvestis(student A[],int kiek, char vidmed){
+void Isvestis(std::vector<student>& A,int kiek, char vidmed){
 if(vidmed=='v')cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(28)  << std::right << "Galutinis ivertinimas (vid.)" << endl;
 if(vidmed=='m')cout << setw(20) << std::left << "Vardas" << std::left << setw(20) << "Pavarde" << setw(28)  << std::right << "Galutinis ivertinimas (med.)" << endl;
 cout << "--------------------------------------------------------------------" << endl;
@@ -186,8 +189,4 @@ double NDmediana(std::vector<double>& A, int n){
 if(n%2==0)med=(A[n/2]+A[n/2+1])/2;
 else if(n%2==1)med=A[n/2];
 return med;
-}
-
-void sortByName(student A[], int stud,int ndk){
-
 }
